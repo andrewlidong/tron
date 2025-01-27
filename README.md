@@ -16,7 +16,7 @@ A Python-based implementation of the classic Tron light cycle game using Pygame.
    ```
 2. Run the game:
    ```bash
-   python tron_game_expanded.py
+   python3 tron.py
    ```
 
 ## Controls
