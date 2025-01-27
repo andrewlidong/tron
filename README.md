@@ -30,8 +30,6 @@ A Python-based implementation of the classic Tron light cycle game using Pygame.
 - Arrow keys - Move in respective directions.
 
 ## TODOs
-- [ ] Add AI opponents for single-player mode.
-- [ ] Implement dynamic obstacles that move during gameplay.
 - [ ] Add networked multiplayer support for online play.
 - [ ] Include customizable player colors and controls.
 - [ ] Implement a high-score leaderboard.
