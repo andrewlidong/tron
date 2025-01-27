@@ -2,6 +2,7 @@ import pygame
 import sys
 import random
 import math
+import os
 
 # Initialize Pygame
 pygame.init()
@@ -17,6 +18,24 @@ PLAYER1_COLOR = (0, 255, 0)
 PLAYER2_COLOR = (255, 0, 0)
 POWER_UP_COLOR = (0, 0, 255)
 OBSTACLE_COLOR = (128, 128, 128)
+
+# Sounds
+pygame.mixer.init()
+BASE_PATH = os.path.dirname(__file__)
+BACKGROUND_MUSIC = os.path.join(BASE_PATH, "background_music.mp3")
+COLLISION_SOUND = os.path.join(BASE_PATH, "collision.wav")
+POWER_UP_SOUND = os.path.join(BASE_PATH, "power_up.wav")
+
+try:
+    # Load and play background music
+    pygame.mixer.music.load(BACKGROUND_MUSIC)
+    pygame.mixer.music.play(-1)  # Loop indefinitely
+    collision_sound = pygame.mixer.Sound(COLLISION_SOUND)
+    power_up_sound = pygame.mixer.Sound(POWER_UP_SOUND)
+except pygame.error as e:
+    print(f"Sound error: {e}")
+    collision_sound = None
+    power_up_sound = None
 
 # Initialize screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -162,10 +181,14 @@ def main():
             if player1.check_collision(WIDTH, HEIGHT, all_trails, obstacles) or (player1.x, player1.y) == (ai_player.x, ai_player.y):
                 print("AI Wins!")
                 ai_score += 1
+                if collision_sound:
+                    collision_sound.play()
                 collision_detected = True
             elif ai_player.check_collision(WIDTH, HEIGHT, all_trails, obstacles) or (ai_player.x, ai_player.y) == (player1.x, player1.y):
                 print("Player 1 Wins!")
                 player1_score += 1
+                if collision_sound:
+                    collision_sound.play()
                 collision_detected = True
 
         # Stop the game if any collision is detected
@@ -175,10 +198,14 @@ def main():
         # Check for power-up collection
         if (player1.x, player1.y) == power_up:
             print("Player 1 collected the power-up! Speed boost activated!")
+            if power_up_sound:
+                power_up_sound.play()
             power_up = generate_power_up()  # Generate a new power-up
             clock.tick(15)  # Temporarily increase speed for Player 1
         if (ai_player.x, ai_player.y) == power_up:
             print("AI collected the power-up! Speed boost activated!")
+            if power_up_sound:
+                power_up_sound.play()
             power_up = generate_power_up()  # Generate a new power-up
             clock.tick(15)  # Temporarily increase speed for AI
 
